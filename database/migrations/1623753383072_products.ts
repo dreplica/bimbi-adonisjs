@@ -11,7 +11,7 @@ export default class Products extends BaseSchema {
         .integer('product_category_id')
         .unsigned()
         .references('product_category.id')
-        .onDelete('CASCADE');
+        .onDelete('CASCADE')
       table
         .integer('product_sub_category_id')
         .unsigned()

@@ -7,7 +7,11 @@ export default class ProductSubCategories extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table.string('name').unique().notNullable()
-      table.integer('product_category_id').unsigned().references('product_category.id').onDelete("CASCADE")
+      table
+        .integer('product_category_id')
+        .unsigned()
+        .references('product_category.id')
+        .onDelete('CASCADE')
       table.boolean('status')
       table.timestamps(true)
     })

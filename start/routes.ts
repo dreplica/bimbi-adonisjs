@@ -20,18 +20,22 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.post('login',"AuthenticatesController.index")
-Route.post('signup',"AuthenticatesController.signup")
+Route.post('login', 'AuthenticatesController.index')
+Route.post('signup', 'AuthenticatesController.signup')
 
-Route.group(()=>{
+Route.group(() => {
   Route.get('/', 'ProductsController.index')
   Route.get('/one', 'ProductsController.getOneProduct')
   Route.post('/', 'ProductsController.postProduct')
   Route.put('/', 'ProductsController.updateProduct')
   Route.delete('/', 'ProductsController.deleteProduct')
-}).prefix('/product').middleware("auth")
+})
+  .prefix('/product')
+  .middleware('auth')
 
-Route.group(()=>{
+Route.group(() => {
   Route.post('/', 'CategoriesController.categories')
   Route.post('/subcategories', 'CategoriesController.subCategories')
-}).prefix('/categories').middleware("auth")
+})
+  .prefix('/categories')
+  .middleware('auth')

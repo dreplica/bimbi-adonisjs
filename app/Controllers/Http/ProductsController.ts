@@ -50,7 +50,9 @@ export default class ProductsController {
   public async deleteProduct({ auth, request, response }: HttpContext & HttpContextContract) {
     try {
       const token = auth.user as token
-      if (!await Product.query().where('id', request.qs().id).where('user_id', token.id).delete()) {
+      if (
+        !(await Product.query().where('id', request.qs().id).where('user_id', token.id).delete())
+      ) {
         throw new Error("couldn't delete")
       }
       return { message: 'product deleted: ', status: 'success' }
@@ -62,8 +64,11 @@ export default class ProductsController {
   public async updateProduct({ auth, request, response }: HttpContext & HttpContextContract) {
     try {
       const token = auth.user as token
-      const check = await request.validate({schema:validatePut})
-      const product = await Product.query().where('id', request.qs().id).where('user_id', token.id).update({...check})
+      const check = await request.validate({ schema: validatePut })
+      const product = await Product.query()
+        .where('id', request.qs().id)
+        .where('user_id', token.id)
+        .update({ ...check })
       return { message: 'product updated', status: 'success', data: product }
     } catch (error) {
       response.badRequest({ message: 'Please try again', error: error })

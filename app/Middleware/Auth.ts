@@ -51,13 +51,13 @@ export default class AuthMiddleware {
     throw new AuthenticationException(
       'Unauthorized access',
       'E_UNAUTHORIZED_ACCESS',
-      guardLastAttempted,
+      guardLastAttempted
     )
   }
 
   /**
    * Handle request
-  */
+   */
   public async handle(
     { auth }: HttpContextContract,
     next: () => Promise<void>,
@@ -67,11 +67,8 @@ export default class AuthMiddleware {
      * Uses the user defined guards or the default guard mentioned in
      * the config file
      */
-    if(!(await auth.use('api').authenticate()).$attributes.admin!){
-      throw new AuthenticationException(
-        'Unauthorized access',
-        'E_UNAUTHORIZED_ACCESS',
-      )
+    if (!(await auth.use('api').authenticate()).$attributes.admin!) {
+      throw new AuthenticationException('Unauthorized access', 'E_UNAUTHORIZED_ACCESS')
     }
     const guards = customGuards.length ? customGuards : [auth.name]
     await this.authenticate(auth, guards)

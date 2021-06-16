@@ -15,11 +15,11 @@ export default class ProductCategory extends BaseModel {
   public status: boolean
 
   @hasMany(() => ProductSubCategory, {
-    foreignKey:"product_category_id",
-    localKey:"id"
+    foreignKey: 'product_category_id',
+    localKey: 'id',
   })
   public productsubcategories: HasMany<typeof ProductSubCategory>
 
-  @manyToMany(()=>Product)
+  @manyToMany(() => Product)
   public product: ManyToMany<typeof Product>
 }

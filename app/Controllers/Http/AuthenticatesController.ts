@@ -8,28 +8,27 @@ import { validateRegistration } from 'App/helpers/authvalidator'
 import token from 'App/Models/token'
 
 export default class AuthenticatesController {
-  public async index({auth,request,  response}: HttpContext &  HttpContextContract) {
+  public async index({ auth, request, response }: HttpContext & HttpContextContract) {
     try {
-      const user_email = request.input('email')
+      const userEmail = request.input('email')
       const password = request.input('password')
-      const user = await User.query().where('email', user_email).firstOrFail()
+      const user = await User.query().where('email', userEmail).firstOrFail()
 
       if (!(await Hash.verify(user.password.trim(), password.trim()))) {
         return response.badRequest('Invalid credentials')
       }
 
       const token = await auth.use('api').generate(<token>(user as unknown), {
-        email: user_email,
-        admin: user.type === "admin"?1:0
+        email: userEmail,
+        admin: user.type === 'admin' ? 1 : 0,
       })
       return token
     } catch (error) {
-      response.unauthorized({message: "invalid credentials"})
-
+      response.unauthorized({ message: 'invalid credentials' })
     }
   }
 
-  public async signup({ auth, request, response, ...rest }: HttpContext &  HttpContextContract) {
+  public async signup({ auth, request, response, ...rest }: HttpContext & HttpContextContract) {
     try {
       const userDetails = await request.validate({
         schema: validateRegistration,
@@ -39,16 +38,16 @@ export default class AuthenticatesController {
       await user.save()
       request.input = (arg) => {
         return { email: user.email, password: userDetails.password }[arg]
-      };
+      }
 
       return this.index({
         auth: auth as typeof auth,
         request: request as typeof request,
         response: response as typeof response,
-        ...rest
+        ...rest,
       })
     } catch (error) {
-      response.unauthorized({message : "sorry try again", error})
+      response.unauthorized({ message: 'sorry try again', error })
     }
   }
 }

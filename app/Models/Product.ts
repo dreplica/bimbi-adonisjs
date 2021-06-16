@@ -1,8 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, BelongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import auth from './auth'
-import ProductCategory from './ProductCategory'
-import ProductSubCategory from './ProductSubCategory'
+import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Product extends BaseModel {
   @column({ isPrimary: true })

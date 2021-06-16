@@ -2,12 +2,12 @@ import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel } from '@ioc:Adonis/Lucid/Orm'
 
-enum user_type {
+enum UserType {
   ADMIN = 'admin',
   USER = 'user',
 }
 
-export default class users extends BaseModel {
+export default class Users extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
@@ -39,7 +39,7 @@ export default class users extends BaseModel {
   public rememberMeToken?: string
 
   @column()
-  public type: user_type
+  public type: UserType
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
@@ -48,7 +48,7 @@ export default class users extends BaseModel {
   public updatedAt: DateTime
 
   @beforeSave()
-  public static async hashPassword(users: users) {
+  public static async hashPassword(users: Users) {
     if (users.$dirty.password) {
       users.password = await Hash.make(users.password)
     }

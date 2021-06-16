@@ -21,9 +21,9 @@ export default class CategoriesController {
     try {
       const productsubcategorie = new ProductSubCategorie()
       let check = await request.validate({ schema: validateSubCat })
-      const product_id = await ProductCategory.findByOrFail('id', check.product_category_id)
+      const productid = await ProductCategory.findByOrFail('id', check.product_category_id)
       productsubcategorie.name = check.name
-      productsubcategorie.product_category_id = product_id.id
+      productsubcategorie.product_category_id = productid.id
       productsubcategorie.status = check.status ? true : false
       await productsubcategorie.save()
       return { message: 'categories saved', status: 'success' }
